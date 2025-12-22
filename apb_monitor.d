@@ -3,7 +3,7 @@ module apb.apb_monitor;
 import esdl;
 import uvm;
 
-import apb.apb_seq_item: apb_seq_item, access_enum;
+import apb.apb_seq_item: apb_seq_item;
 import apb.apb_intf: apb_intf;
 
 class apb_monitor(int DW, int AW): uvm_monitor
@@ -48,11 +48,11 @@ class apb_monitor(int DW, int AW): uvm_monitor
       // item.err  = apb_if.PSLVERR;
 
       if (apb_if.PWRITE) {
-        item.type = access_enum.WRITE;
+        item.is_write = true;
         item.data = apb_if.PWDATA;
       }
       else {
-        item.type = access_enum.READ;
+        item.is_write = false;
         item.data = apb_if.PRDATA;
       }
       uvm_info("APB: ITEM", format("\n%s", item.sprint()), UVM_DEBUG);

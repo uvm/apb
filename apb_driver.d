@@ -3,7 +3,7 @@ module apb.apb_driver;
 import esdl;
 import uvm;
 
-import apb.apb_seq_item: apb_seq_item, access_enum;
+import apb.apb_seq_item: apb_seq_item;
 import apb.apb_intf: apb_intf;
 
 class apb_driver(int DW, int AW): uvm_driver!(apb_seq_item!(DW, AW))
@@ -67,7 +67,7 @@ class apb_driver(int DW, int AW): uvm_driver!(apb_seq_item!(DW, AW))
         wait (apb_if.PCLK.posedge());
       }
       seq_item_port.get_next_item(req);
-      if (req.type == access_enum.WRITE) {
+      if (req.is_write) {
         write(req.addr, req.data);
       }
       else {
@@ -77,7 +77,7 @@ class apb_driver(int DW, int AW): uvm_driver!(apb_seq_item!(DW, AW))
         wait (apb_if.PCLK.posedge());
       }
       wait (apb_if.PCLK.negedge());
-      if (req.type == access_enum.READ) req.data = apb_if.PRDATA;
+      if (! req.is_write) req.data = apb_if.PRDATA;
       apb_if.PADDR = UBVEC!(8, 0);
       apb_if.PENABLE = false;
       apb_if.PWDATA = UBVEC!(32, 0);;

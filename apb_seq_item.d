@@ -3,8 +3,6 @@ module apb.apb_seq_item;
 import esdl;
 import uvm;
 
-enum access_enum: bool {READ, WRITE}
-
 class apb_seq_item(int DW, int AW): uvm_sequence_item
 {
   mixin uvm_object_utils;
@@ -18,7 +16,7 @@ class apb_seq_item(int DW, int AW): uvm_sequence_item
   @UVM_DEFAULT {
     @rand ubvec!AW addr;
     @rand ubvec!DW  data;
-    @rand access_enum type;
+    @rand bool is_write;
     @UVM_BIN                    // print in binary format
       @rand ubvec!BW strb;
   }
